@@ -1,5 +1,6 @@
 package com.example.travel_logger;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -18,6 +19,10 @@ public interface DataDao {
     @Delete
     void delete(DataEntity dataEntity);
 
-    @Query("SELECT * FROM dataentity")
+    @Query("SELECT * FROM dataEntity")
     List<DataEntity> getAll();
+
+    // get info by id
+    @Query("SELECT * FROM dataEntity WHERE id = :id")
+    DataEntity getDataById(String id);
 }

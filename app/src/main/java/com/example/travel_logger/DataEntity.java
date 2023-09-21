@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.ColumnInfo;
 
 
-@Entity
+@Entity(tableName = "dataEntity")
 public class DataEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -26,5 +26,20 @@ public class DataEntity {
     @ColumnInfo(name = "pictureUri")
     public String pictureUri;
 
+    public int getFeeling(){
+        return feeling;
+    }
+
+    public int getWeather(){
+        return weather;
+    }
+
+    public String getDiary(){
+        return diary;
+    }
+
+    public String getPictureUri(){
+        return pictureUri;
+    }
 
 }

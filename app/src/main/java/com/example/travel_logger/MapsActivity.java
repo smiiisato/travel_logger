@@ -17,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.travel_logger.databinding.ActivityMapsBinding;
 
@@ -108,6 +109,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         frag.show(getSupportFragmentManager(), "Ashwani");
     }
 
+    private void addInfoFragment() {
+        // show database fragment
+        ShowInfoFragment frag2 = new ShowInfoFragment();
+        frag2.show(getSupportFragmentManager(), "Ashwani");
+    }
+
     private boolean checkLocationPermission() {
         // 既に位置情報のパーミッションが付与されている場合
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -154,10 +161,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions()
                         .position(currentLocation)
                         .icon(BitmapDescriptorFactory.fromBitmap(smallBitmap)));
-            }
 
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        // マーカーがクリックされた時のアクション
+                        addInfoFragment();
+                        return true;
+                    }
+                });
+            }
         });
     }
+
 
     private void startLocationUpdates() {
         LocationRequest locationRequest = LocationRequest.create();
