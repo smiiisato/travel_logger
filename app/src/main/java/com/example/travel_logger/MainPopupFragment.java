@@ -36,7 +36,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import android.content.ContentValues;
-
+import android.widget.LinearLayout;
 
 
 public class MainPopupFragment extends BottomSheetDialogFragment {
@@ -50,7 +50,17 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     private FusedLocationProviderClient fusedLocationClient;
     private Bitmap imageBitmap;
     private static final int REQUEST_CODE = 1234;
-    private Uri uri;
+    private Uri uri = null;
+    private int feeling = 0;
+    private int weather = 0;
+    private String diary = null;
+    private String pictureUri = null;
+    private Button normalFace = binding.normalFace;
+    private Button happyFace = binding.happyFace;
+    private Button sadFace = binding.sadFace;
+    private Button sunButton = binding.sunButton;
+    private Button cloudButton = binding.cloudButton;
+    private Button rainButton = binding.rainButton;
 
 
     public MainPopupFragment() {
@@ -85,7 +95,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
         Button button2 = binding.button2;
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                raiseMusic();
+                raiseFeeling();
             }
         });
         Button button3 = binding.button3;
@@ -114,8 +124,9 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
         MapsActivity activity = (MapsActivity) getActivity();
         if(activity instanceof MapsActivity) {
             activity.addMarkerWithImage(uri);
+            diary = binding.editTextInput.toString();
+            activity.insertDatabase(feeling, weather, diary, pictureUri);
         }
-
     }
 
     private void raiseDiary() {
@@ -141,9 +152,89 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     }
     private void raiseWeather() {
         // fill in this
+        LinearLayout buttonContainer2 = binding.buttonContainer2;
+        buttonContainer2.setVisibility(View.VISIBLE);
+
+        sunButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseSunButton();
+            }
+        });
+
+        cloudButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseCloudButton();
+            }
+        });
+
+        rainButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseRainButton();
+            }
+        });
     }
-    private void raiseMusic() {
+
+    private void raiseFeeling() {
         // fill in this
+        LinearLayout buttonContainer = binding.buttonContainer;
+        buttonContainer.setVisibility(View.VISIBLE);
+
+        //Button normalFace = binding.normalFace;
+        normalFace.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseNormalFace();
+            }
+        });
+
+        //Button happyFace = binding.happyFace;
+        happyFace.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseHappyFace();
+            }
+        });
+
+        //Button sadFace = binding.sadFace;
+        sadFace.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseSadFace();
+            }
+        });
+    }
+
+    private void raiseSunButton(){
+        weather = 1;
+        cloudButton.setVisibility(View.GONE);
+        rainButton.setVisibility(View.GONE);
+    }
+
+    private void raiseCloudButton(){
+        weather = 2;
+        sunButton.setVisibility(View.GONE);
+        rainButton.setVisibility(View.GONE);
+    }
+
+    private void raiseRainButton(){
+        weather = 3;
+        cloudButton.setVisibility(View.GONE);
+        sunButton.setVisibility(View.GONE);
+    }
+
+    private void raiseNormalFace(){
+        feeling = 1;
+        happyFace.setVisibility(View.GONE);
+        sadFace.setVisibility(View.GONE);
+    }
+
+    private void raiseHappyFace(){
+        feeling = 2;
+        normalFace.setVisibility(View.GONE);
+        sadFace.setVisibility(View.GONE);
+    }
+
+    private void raiseSadFace(){
+        feeling = 3;
+        happyFace.setVisibility(View.GONE);
+        normalFace.setVisibility(View.GONE);
     }
 
     @Override
@@ -155,6 +246,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
         //}
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             try {
+                pictureUri = uri.toString();
                 Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
                 imageView.setImageBitmap(imageBitmap);
             } catch (IOException e) {

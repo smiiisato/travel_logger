@@ -5,6 +5,7 @@ import static androidx.core.content.ContentProviderCompat.requireContext;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
@@ -87,6 +88,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         };
+
+        DataBase db = Room.databaseBuilder(getApplicationContext(),
+                DataBase.class, "database-name").allowMainThreadQueries().build();
     }
 
     /**
@@ -168,4 +172,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, Looper.getMainLooper());
     }
+
+    //set insert data function
+    public void insertDatabase(int feeling, int weather, String diary, String pictureUri){
+        DataEntity dataEntity = new DataEntity();
+        dataEntity.feeling = feeling;
+        dataEntity.weather = weather;
+        dataEntity.diary = diary;
+        dataEntity.pictureUri = pictureUri;
+    }
+
 }

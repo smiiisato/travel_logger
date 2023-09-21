@@ -11,10 +11,20 @@ public class DataEntity {
     public int id;
     // define data entity
     //feeling
+    @ColumnInfo(name = "feeling")
+    public int feeling;
+
     //weather
+    @ColumnInfo(name = "weather")
+    public int weather;
+
     //diary
     @ColumnInfo(name = "diary")
     public String diary;
+
+    //picture uri
+    @ColumnInfo(name = "pictureUri")
+    public String pictureUri;
 
 
 }
