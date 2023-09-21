@@ -18,6 +18,12 @@
         android:layout_height="match_parent"
         tools:context=".MapsActivity" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:layout_alignParentBottom="true"/>
+
     <Button
         android:id="@+id/myButton"
         android:layout_width="36dp"
@@ -27,4 +33,6 @@
         android:background="@drawable/ic_baseline_add_circle_outline_24" />
 
 
+
 </RelativeLayout>
+

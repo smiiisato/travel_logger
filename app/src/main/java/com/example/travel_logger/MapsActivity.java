@@ -19,6 +19,12 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
 import android.Manifest;
+import android.widget.Button;
+import android.view.View;
+
+import com.example.travel_logger.MainPopupFragment;
+
+
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -40,6 +46,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Button addButton = binding.myButton;
+        addButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addFragment();
+            }
+        });
     }
 
     /**
@@ -51,6 +64,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    private void addFragment() {
+        MainPopupFragment frag= new MainPopupFragment();
+        frag.show(getSupportFragmentManager(),"Ashwani");
+    }
 
     private boolean checkLocationPermission() {
         // 既に位置情報のパーミッションが付与されている場合
