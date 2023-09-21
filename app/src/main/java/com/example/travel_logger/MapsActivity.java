@@ -1,11 +1,14 @@
 package com.example.travel_logger;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,6 +23,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
 import android.Manifest;
+import android.provider.MediaStore;
 import android.widget.Button;
 import android.view.View;
 
@@ -35,7 +39,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationRequest;
 import android.os.Looper;
 
-
+import java.io.IOException;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -130,7 +134,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @SuppressLint("MissingPermission")
-    public void addMarkerWithImage(Bitmap imageBitmap) {
+    public void addMarkerWithImage(Uri uri) {
+        Bitmap imageBitmap = null;
+        try {
+            imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Bitmap smallBitmap = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false); // 100x100にリサイズ
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {

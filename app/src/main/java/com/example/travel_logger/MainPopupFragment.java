@@ -113,7 +113,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         MapsActivity activity = (MapsActivity) getActivity();
         if(activity instanceof MapsActivity) {
-            activity.addMarkerWithImage(imageBitmap);
+            activity.addMarkerWithImage(uri);
         }
 
     }
