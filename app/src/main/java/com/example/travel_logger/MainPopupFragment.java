@@ -1,6 +1,7 @@
 package com.example.travel_logger;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,8 @@ import android.location.Location;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import android.content.ContentValues;
+
 
 
 public class MainPopupFragment extends BottomSheetDialogFragment {
@@ -47,6 +50,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     private FusedLocationProviderClient fusedLocationClient;
     private Bitmap imageBitmap;
     private static final int REQUEST_CODE = 1234;
+    private Uri uri;
 
 
     public MainPopupFragment() {
@@ -124,8 +128,15 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+
+            uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
     private void raiseWeather() {
@@ -137,12 +148,22 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+        //    imageBitmap = (Bitmap) data.getExtras().get("data");
+        //    //saveBitmapToFile(imageBitmap, IMAGE_FILE_NAME);
+        //    imageView.setImageBitmap(imageBitmap);
+        //}
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            imageBitmap = (Bitmap) data.getExtras().get("data");
-            saveBitmapToFile(imageBitmap, IMAGE_FILE_NAME);
-            imageView.setImageBitmap(imageBitmap);
+            try {
+                Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
+                imageView.setImageBitmap(imageBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+
 
     private void saveBitmapToFile(Bitmap bitmap, String fileName) {
         File root = getContext().getExternalFilesDir(null);
