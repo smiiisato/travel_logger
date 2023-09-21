@@ -24,8 +24,16 @@ import android.os.Environment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-
+import android.Manifest;
+import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import android.widget.ImageView;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import android.location.Location;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 
 public class MainPopupFragment extends BottomSheetDialogFragment {
@@ -34,6 +42,12 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     private EditText editTextInput;
     private int REQUEST_IMAGE_CAPTURE = 1;
     private static final String IMAGE_FILE_NAME = "captured_image.jpg";
+    private static final int REQUEST_CAMERA_PERMISSION = 101;
+    private ImageView imageView;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Bitmap imageBitmap;
+    private static final int REQUEST_CODE = 1234;
+
 
     public MainPopupFragment() {
         // Required empty public constructor
@@ -55,6 +69,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         editTextInput = binding.editTextInput;
         View view = binding.getRoot();
+
 
         Button button1 = binding.button1;
         button1.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +97,21 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
             }
         });
 
+        imageView = binding.imageView;
+
+
         return view;
+    }
+
+
+    public void onDetach(){
+        super.onDetach();
+
+        MapsActivity activity = (MapsActivity) getActivity();
+        if(activity instanceof MapsActivity) {
+            activity.addMarkerWithImage(imageBitmap);
+        }
+
     }
 
     private void raiseDiary() {
@@ -91,9 +120,12 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     }
     private void raiseCamera() {
         // fill in this
+        // check permission
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
         }
     }
     private void raiseWeather() {
@@ -106,8 +138,9 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+            imageBitmap = (Bitmap) data.getExtras().get("data");
             saveBitmapToFile(imageBitmap, IMAGE_FILE_NAME);
+            imageView.setImageBitmap(imageBitmap);
         }
     }
 
@@ -124,4 +157,5 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
             e.printStackTrace();
         }
     }
+
 }

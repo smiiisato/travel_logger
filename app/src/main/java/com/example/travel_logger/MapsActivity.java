@@ -4,6 +4,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -22,7 +23,17 @@ import android.Manifest;
 import android.widget.Button;
 import android.view.View;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+
 import com.example.travel_logger.MainPopupFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.maps.model.PolylineOptions;
+import android.location.Location;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationRequest;
+import android.os.Looper;
 
 
 
@@ -33,7 +44,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationCallback mLocationCallback;
+    private PolylineOptions mPolylineOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +57,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mPolylineOptions = new PolylineOptions();
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -53,6 +69,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 addFragment();
             }
         });
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    LatLng newPoint = new LatLng(location.getLatitude(), location.getLongitude());
+                    mPolylineOptions.add(newPoint);
+                    mMap.addPolyline(mPolylineOptions);
+                }
+            }
+        };
     }
 
     /**
@@ -66,8 +96,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
 
     private void addFragment() {
-        MainPopupFragment frag= new MainPopupFragment();
-        frag.show(getSupportFragmentManager(),"Ashwani");
+        MainPopupFragment frag = new MainPopupFragment();
+        frag.show(getSupportFragmentManager(), "Ashwani");
     }
 
     private boolean checkLocationPermission() {
@@ -87,13 +117,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (checkLocationPermission()) {
             mMap.setMyLocationEnabled(true);
+
+            startLocationUpdates();
         }
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
             if (location != null) {
                 LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(currentLocation).title("現在位置"));
+                //mMap.addMarker(new MarkerOptions().position(currentLocation).title("現在位置"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
             }
         });
+    }
+
+    @SuppressLint("MissingPermission")
+    public void addMarkerWithImage(Bitmap imageBitmap) {
+        Bitmap smallBitmap = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false); // 100x100にリサイズ
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(currentLocation)
+                        .icon(BitmapDescriptorFactory.fromBitmap(smallBitmap)));
+            }
+
+        });
+    }
+
+    private void startLocationUpdates() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000); // 10 seconds
+        locationRequest.setFastestInterval(5000); // 5 seconds
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, Looper.getMainLooper());
     }
 }
