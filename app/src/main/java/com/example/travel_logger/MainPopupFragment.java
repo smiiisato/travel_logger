@@ -1,42 +1,28 @@
 package com.example.travel_logger;
 
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.example.travel_logger.databinding.ActivityMapsBinding;
-import com.example.travel_logger.databinding.FragmentMainPopupFragmentBinding;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.example.travel_logger.databinding.ActivityMapsBinding;
-import android.content.Intent;
 import android.widget.EditText;
-import android.provider.MediaStore;
-import android.content.pm.PackageManager;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.os.Environment;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.example.travel_logger.databinding.FragmentMainPopupFragmentBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import android.Manifest;
-import androidx.core.content.ContextCompat;
-import androidx.core.app.ActivityCompat;
-import android.widget.ImageView;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import android.location.Location;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import android.content.ContentValues;
-import android.widget.LinearLayout;
 
 
 public class MainPopupFragment extends BottomSheetDialogFragment {
@@ -55,18 +41,17 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     private int weather = 0;
     private String diary = null;
     private String pictureUri = null;
-    private Button normalFace = binding.normalFace;
-    private Button happyFace = binding.happyFace;
-    private Button sadFace = binding.sadFace;
-    private Button sunButton = binding.sunButton;
-    private Button cloudButton = binding.cloudButton;
-    private Button rainButton = binding.rainButton;
+    private Button normalFace;
+    private Button happyFace;
+    private Button sadFace;
+    private Button sunButton;
+    private Button cloudButton;
+    private Button rainButton;
 
 
     public MainPopupFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -80,6 +65,12 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentMainPopupFragmentBinding.inflate(inflater, container, false);
+        normalFace = binding.normalFace;
+        happyFace = binding.happyFace;
+        sadFace = binding.sadFace;
+        sunButton = binding.sunButton;
+        cloudButton = binding.cloudButton;
+        rainButton = binding.rainButton;
 
         editTextInput = binding.editTextInput;
         View view = binding.getRoot();

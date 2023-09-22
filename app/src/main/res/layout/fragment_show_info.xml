@@ -38,6 +38,36 @@
                 />
 
             //show icon here
+            <LinearLayout
+                android:id="@+id/buttonContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/normalFace2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_baseline_sentiment_normal"
+                    android:layout_marginRight="16dp"
+                    />
+                <Button
+                    android:id="@+id/happyFace2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_baseline_sentiment_happy"
+                    android:layout_marginRight="16dp"
+                    />
+                <Button
+                    android:id="@+id/sadFace2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_baseline_sentiment_sad"
+                    android:layout_marginRight="16dp"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -57,9 +87,39 @@
 
             //show icon here
 
+
         </LinearLayout>
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add diary"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:background="@drawable/rectangle_border"
+        android:layout_centerInParent="true"/>
+
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add picture" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop" />
 
 </LinearLayout>

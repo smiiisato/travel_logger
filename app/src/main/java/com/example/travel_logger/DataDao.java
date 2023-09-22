@@ -24,5 +24,5 @@ public interface DataDao {
 
     // get info by id
     @Query("SELECT * FROM dataEntity WHERE id = :id")
-    DataEntity getDataById(String id);
+    DataEntity getDataById(int id);
 }

@@ -5,6 +5,7 @@ import static androidx.core.content.ContentProviderCompat.requireContext;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.room.Database;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
@@ -174,7 +175,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-
     private void startLocationUpdates() {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setInterval(10000); // 10 seconds
@@ -196,6 +196,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dataEntity.weather = weather;
         dataEntity.diary = diary;
         dataEntity.pictureUri = pictureUri;
+    }
+
+    public DataEntity getDataBase(int id){
+        DataBase db = Room.databaseBuilder(getApplicationContext(),
+                DataBase.class, "database").build();
+        DataDao dataDao = db.dataDao();
+
+        DataEntity dataEntity = dataDao.getDataById(id);
+
+        return dataEntity;
     }
 
 }

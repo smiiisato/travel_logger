@@ -130,6 +130,7 @@
         android:layout_height="wrap_content"
         android:hint="ここに入力してください"
         android:visibility="gone"
+        android:background="@drawable/rectangle_border"
         android:layout_marginBottom="8dp"/> <!-- 最初は非表示にする -->
 
 
