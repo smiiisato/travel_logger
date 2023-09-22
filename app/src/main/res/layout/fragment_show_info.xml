@@ -86,6 +86,34 @@
                 android:layout_marginBottom="8dp"/>
 
             //show icon here
+            <LinearLayout
+                android:id="@+id/buttonContainer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/sunButton"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_baseline_wb_sun"
+                    android:layout_marginRight="16dp"
+                    />
+                <Button
+                    android:id="@+id/cloudButton"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_baseline_cloud"
+                    android:layout_marginRight="16dp"/>
+                <Button
+                    android:id="@+id/rainButton"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_baseline_umbrella"
+                    android:layout_marginRight="16dp"/>
+
+            </LinearLayout>
 
 
         </LinearLayout>

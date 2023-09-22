@@ -28,7 +28,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp"
-            android:layout_marginRight="30dp">
+            android:layout_marginRight="30dp"
+            android:layout_weight="0.5">
 
             <Button
                 android:id="@+id/button2"
@@ -51,6 +52,7 @@
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_sentiment_normal"
                     android:layout_marginRight="16dp"
+                    android:layout_weight="0.5"
                     />
                 <Button
                     android:id="@+id/happyFace"
@@ -58,6 +60,7 @@
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_sentiment_happy"
                     android:layout_marginRight="16dp"
+                    android:layout_weight="0.5"
                     />
                 <Button
                     android:id="@+id/sadFace"
@@ -65,6 +68,7 @@
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_sentiment_sad"
                     android:layout_marginRight="16dp"
+                    android:layout_weight="0.5"
                     />
 
             </LinearLayout>
@@ -75,7 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_weight="0.5">
 
             <Button
                 android:id="@+id/button3"
@@ -97,19 +102,22 @@
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_wb_sun"
                     android:layout_marginRight="16dp"
+                    android:layout_weight="0.5"
                     />
                 <Button
                     android:id="@+id/cloudButton"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_cloud"
-                    android:layout_marginRight="16dp"/>
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="0.5"/>
                 <Button
                     android:id="@+id/rainButton"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_umbrella"
-                    android:layout_marginRight="16dp"/>
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="0.5"/>
 
             </LinearLayout>
         </LinearLayout>

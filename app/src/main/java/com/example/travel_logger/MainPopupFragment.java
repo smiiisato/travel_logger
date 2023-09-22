@@ -116,6 +116,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
         if(activity instanceof MapsActivity) {
             activity.addMarkerWithImage(uri);
             diary = binding.editTextInput.toString();
+            pictureUri = uri.toString();
             activity.insertDatabase(feeling, weather, diary, pictureUri);
         }
     }
