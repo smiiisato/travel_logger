@@ -23,6 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 
 public class MainPopupFragment extends BottomSheetDialogFragment {
@@ -39,6 +40,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     private Uri uri = null;
     private int feeling = 0;
     private int weather = 0;
+    private int id = 0;
     private String diary = null;
     private String pictureUri = null;
     private Button normalFace;
@@ -47,6 +49,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     private Button sunButton;
     private Button cloudButton;
     private Button rainButton;
+    private Random rand = new Random();
 
 
     public MainPopupFragment() {
@@ -104,6 +107,8 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         imageView = binding.imageView;
 
+        id = rand.nextInt(100);
+
 
         return view;
     }
@@ -114,10 +119,12 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         MapsActivity activity = (MapsActivity) getActivity();
         if(activity instanceof MapsActivity) {
-            activity.addMarkerWithImage(uri);
-            diary = binding.editTextInput.toString();
+
+            diary = binding.editTextInput.getText().toString();
             pictureUri = uri.toString();
             activity.insertDatabase(feeling, weather, diary, pictureUri);
+            id = activity.getId();
+            activity.addMarkerWithImage(uri,id);
         }
     }
 

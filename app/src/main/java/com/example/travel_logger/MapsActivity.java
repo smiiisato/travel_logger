@@ -5,6 +5,7 @@ import static androidx.core.content.ContentProviderCompat.requireContext;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.room.Dao;
 import androidx.room.Database;
 import androidx.room.Room;
 
@@ -43,6 +44,7 @@ import com.google.android.gms.location.LocationRequest;
 import android.os.Looper;
 
 import java.io.IOException;
+import java.util.Random;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -54,6 +56,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
     private PolylineOptions mPolylineOptions;
+    private DataBase db;
+    private DataDao dataDao;
+    private int id;
+    private Random rand = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +97,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        DataBase db = Room.databaseBuilder(getApplicationContext(),
+        db = Room.databaseBuilder(getApplicationContext(),
                 DataBase.class, "database-name").allowMainThreadQueries().build();
+        dataDao = db.dataDao();
     }
 
     /**
@@ -110,9 +117,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         frag.show(getSupportFragmentManager(), "Ashwani");
     }
 
-    private void addInfoFragment() {
+    private void addInfoFragment(int id) {
         // show database fragment
-        ShowInfoFragment frag2 = new ShowInfoFragment();
+        ShowInfoFragment frag2 = new ShowInfoFragment(id);
         frag2.show(getSupportFragmentManager(), "Ashwani");
     }
 
@@ -146,7 +153,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @SuppressLint("MissingPermission")
-    public void addMarkerWithImage(Uri uri) {
+    public void addMarkerWithImage(Uri uri, int id) {
         Bitmap imageBitmap = null;
         try {
             imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -167,7 +174,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         // マーカーがクリックされた時のアクション
-                        addInfoFragment();
+                        addInfoFragment(id);
                         return true;
                     }
                 });
@@ -196,16 +203,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dataEntity.weather = weather;
         dataEntity.diary = diary;
         dataEntity.pictureUri = pictureUri;
+        dataDao.insertData(dataEntity);
     }
 
     public DataEntity getDataBase(int id){
-        DataBase db = Room.databaseBuilder(getApplicationContext(),
-                DataBase.class, "database").build();
-        DataDao dataDao = db.dataDao();
+        //DataBase db = Room.databaseBuilder(getApplicationContext(),
+        //        DataBase.class, "data-base").allowMainThreadQueries().build();
 
         DataEntity dataEntity = dataDao.getDataById(id);
 
         return dataEntity;
+    }
+
+    public int getId(){
+        id = dataDao.getLatestId();
+        return id;
     }
 
 }

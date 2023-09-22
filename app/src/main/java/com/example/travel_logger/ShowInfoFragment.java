@@ -2,24 +2,22 @@ package com.example.travel_logger;
 
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.travel_logger.databinding.FragmentMainPopupFragmentBinding;
+import com.bumptech.glide.Glide;
 import com.example.travel_logger.databinding.FragmentShowInfoBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 
 public class ShowInfoFragment extends BottomSheetDialogFragment {
 
     private FragmentShowInfoBinding binding;
     private DataEntity dataEntity;
-    private int id;
     private int feeling;
     private int weather;
     private String diary;
@@ -28,11 +26,16 @@ public class ShowInfoFragment extends BottomSheetDialogFragment {
     private Button happyFace;
     private Button normalFace;
     private Button sadFace;
+    private int id;
+    private Button rainButton;
+    private Button sunButton;
+    private Button cloudButton;
+    private ImageView imageView;
 
-    public ShowInfoFragment() {
+    public ShowInfoFragment(int id) {
         // Required empty public constructor
+        this.id=id;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,10 +48,11 @@ public class ShowInfoFragment extends BottomSheetDialogFragment {
         // Inflate the layout for this fragment
         binding = FragmentShowInfoBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-
-        // idを取得
+        textView = binding.textView;
 
         MapsActivity activity = (MapsActivity) getActivity();
+        //id = ((MapsActivity) getActivity()).genId();
+
         if(activity instanceof MapsActivity) {
             // get info from database
             dataEntity = activity.getDataBase(id);
@@ -57,7 +61,9 @@ public class ShowInfoFragment extends BottomSheetDialogFragment {
         feeling = dataEntity.getFeeling();
         weather = dataEntity.getWeather();
         diary = dataEntity.getDiary();
-        pictureUri = Uri.parse(dataEntity.getPictureUri());
+        if(dataEntity.getPictureUri() != "null"){
+            pictureUri = Uri.parse(dataEntity.getPictureUri());
+        }
 
         // textに表示
         textView.setText(diary);
@@ -73,6 +79,22 @@ public class ShowInfoFragment extends BottomSheetDialogFragment {
         }else if(feeling == 3){
             sadFace.setVisibility(View.VISIBLE);
         }
+
+        rainButton = binding.rainButton2;
+        sunButton = binding.sunButton2;
+        cloudButton = binding.cloudButton2;
+        if (weather == 1){
+            sunButton.setVisibility(View.VISIBLE);
+        }else if (weather== 2){
+            cloudButton.setVisibility(View.VISIBLE);
+        }else if(weather == 3){
+            rainButton.setVisibility(View.VISIBLE);
+        }
+
+        imageView = binding.imageView;
+        Glide.with(this)
+                .load(pictureUri)
+                .into(imageView);
 
         return view;
     }

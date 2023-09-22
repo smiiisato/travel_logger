@@ -1,5 +1,7 @@
 package com.example.travel_logger;
 
+import static java.lang.Math.max;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -25,4 +27,7 @@ public interface DataDao {
     // get info by id
     @Query("SELECT * FROM dataEntity WHERE id = :id")
     DataEntity getDataById(int id);
+
+    @Query("SELECT max(id) FROM dataEntity")
+    int getLatestId();
 }
