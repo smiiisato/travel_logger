@@ -60,6 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DataDao dataDao;
     private int id;
     private Random rand = new Random();
+    private int newId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,15 +167,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (location != null) {
                 LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                mMap.addMarker(new MarkerOptions()
+                newId = id;
+
+                Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(currentLocation)
                         .icon(BitmapDescriptorFactory.fromBitmap(smallBitmap)));
+                marker.setTag(newId);
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         // マーカーがクリックされた時のアクション
-                        addInfoFragment(id);
+                        newId = (int) marker.getTag();
+                        addInfoFragment(newId);
                         return true;
                     }
                 });
@@ -215,7 +220,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return dataEntity;
     }
 
-    public int getId(){
+    public int getLastId(){
         id = dataDao.getLatestId();
         return id;
     }

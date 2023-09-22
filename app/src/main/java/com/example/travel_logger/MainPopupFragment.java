@@ -40,7 +40,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     private Uri uri = null;
     private int feeling = 0;
     private int weather = 0;
-    private int id = 0;
+    private int Lastid = 0;
     private String diary = null;
     private String pictureUri = null;
     private Button normalFace;
@@ -107,7 +107,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         imageView = binding.imageView;
 
-        id = rand.nextInt(100);
+        Lastid = rand.nextInt(100);
 
 
         return view;
@@ -123,8 +123,8 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
             diary = binding.editTextInput.getText().toString();
             pictureUri = uri.toString();
             activity.insertDatabase(feeling, weather, diary, pictureUri);
-            id = activity.getId();
-            activity.addMarkerWithImage(uri,id);
+            Lastid = activity.getLastId();
+            activity.addMarkerWithImage(uri, Lastid);
         }
     }
 
