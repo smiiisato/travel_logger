@@ -11,6 +11,12 @@ import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -78,6 +84,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         Button addButton = binding.myButton;
+        //addButton.setBackgroundColor(FA8000);
+        //int color = ContextCompat.getColor(getApplicationContext(), R.color.dark_orange);
+        //addButton.set
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 addFragment();
@@ -162,6 +171,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
         Bitmap smallBitmap = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false); // 100x100にリサイズ
+        Bitmap roundBitmap = getRoundedBitmap(smallBitmap,10);
+        Bitmap borderedBitmap = getBorderBitmap(roundBitmap, 10);
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
             if (location != null) {
@@ -171,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(currentLocation)
-                        .icon(BitmapDescriptorFactory.fromBitmap(smallBitmap)));
+                        .icon(BitmapDescriptorFactory.fromBitmap(borderedBitmap)));
                 marker.setTag(newId);
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -223,6 +234,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public int getLastId(){
         id = dataDao.getLatestId();
         return id;
+    }
+
+    public Bitmap getRoundedBitmap(Bitmap bitmap, int roundPx){
+        if (bitmap == null) {
+            return null;
+        }
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final int color = 0xff424242;
+        Paint paint = new Paint();
+        Rect rect = new Rect(0, 0, bitmap.getWidth(),
+                bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
+
+    public Bitmap getBorderBitmap(Bitmap bitmap, int borderWidth){
+        Bitmap bmpWithBorder = Bitmap.createBitmap(bitmap.getWidth()
+                        + borderWidth * 2, bitmap.getHeight() + borderWidth * 2,
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bmpWithBorder);
+        RectF rectBorder = new RectF(0, 0, bitmap.getWidth()+ borderWidth * 2,
+                bitmap.getHeight()+ borderWidth * 2);
+        final RectF rectFBorder = new RectF(rectBorder);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        int color = 0xfffa8000;
+        paint.setColor(color);
+        canvas.drawRoundRect(rectFBorder, borderWidth, borderWidth, paint);
+        canvas.drawBitmap(bitmap, borderWidth, borderWidth, null);
+        return bmpWithBorder;
     }
 
 }

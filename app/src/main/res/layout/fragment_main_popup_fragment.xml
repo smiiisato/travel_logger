@@ -6,13 +6,14 @@
     tools:context=".MainPopupFragment"
     android:orientation="vertical"
     android:gravity="center_horizontal|center_vertical"
-    android:padding="16dp">
+    >
 
     <!-- TODO: Update blank fragment layout -->
+
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:background="#FFFFFF"
+        android:background="#FA8000"
         android:layout_alignParentBottom="true"/>
 
     <LinearLayout
@@ -35,7 +36,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="feeling"
+                android:background="@drawable/btn_round_border"
+                android:src="@drawable/ic_baseline_add_reaction_24"
+                android:minHeight="0dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#FA8000"
+                android:textColor="#FFFFFF"
                 />
 
             <LinearLayout
@@ -84,7 +93,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="weather"
-                android:layout_marginBottom="8dp"/>
+                android:background="@drawable/btn_round_border"
+                android:minHeight="0dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#FA8000"
+                android:textColor="#FFFFFF"/>
 
             <LinearLayout
                 android:id="@+id/buttonContainer2"
@@ -127,7 +143,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="add diary"
-        android:layout_marginBottom="8dp" />
+        android:background="@drawable/btn_round_border"
+        android:minHeight="0dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FA8000"
+        android:textColor="#FFFFFF"/>
 
     <EditText
         android:id="@+id/editTextInput"
@@ -143,7 +166,16 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="add picture" />
+        android:text="add picture"
+        android:background="@drawable/btn_round_border"
+        android:minHeight="0dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FA8000"
+        android:textColor="#FFFFFF"
+        />
 
     <ImageView
         android:id="@+id/imageView"

@@ -107,7 +107,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         imageView = binding.imageView;
 
-        Lastid = rand.nextInt(100);
+        //id = rand.nextInt(100);
 
 
         return view;
@@ -124,7 +124,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
             pictureUri = uri.toString();
             activity.insertDatabase(feeling, weather, diary, pictureUri);
             Lastid = activity.getLastId();
-            activity.addMarkerWithImage(uri, Lastid);
+            activity.addMarkerWithImage(uri,Lastid);
         }
     }
 
