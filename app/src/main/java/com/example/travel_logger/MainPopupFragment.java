@@ -1,42 +1,29 @@
 package com.example.travel_logger;
 
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.example.travel_logger.databinding.ActivityMapsBinding;
-import com.example.travel_logger.databinding.FragmentMainPopupFragmentBinding;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.example.travel_logger.databinding.ActivityMapsBinding;
-import android.content.Intent;
 import android.widget.EditText;
-import android.provider.MediaStore;
-import android.content.pm.PackageManager;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.os.Environment;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.example.travel_logger.databinding.FragmentMainPopupFragmentBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import android.Manifest;
-import androidx.core.content.ContextCompat;
-import androidx.core.app.ActivityCompat;
-import android.widget.ImageView;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import android.location.Location;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import android.content.ContentValues;
-
+import java.util.Random;
 
 
 public class MainPopupFragment extends BottomSheetDialogFragment {
@@ -50,13 +37,24 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     private FusedLocationProviderClient fusedLocationClient;
     private Bitmap imageBitmap;
     private static final int REQUEST_CODE = 1234;
-    private Uri uri;
+    private Uri uri = null;
+    private int feeling = 0;
+    private int weather = 0;
+    private int Lastid = 0;
+    private String diary = null;
+    private String pictureUri = null;
+    private Button normalFace;
+    private Button happyFace;
+    private Button sadFace;
+    private Button sunButton;
+    private Button cloudButton;
+    private Button rainButton;
+    private Random rand = new Random();
 
 
     public MainPopupFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -70,6 +68,12 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentMainPopupFragmentBinding.inflate(inflater, container, false);
+        normalFace = binding.normalFace;
+        happyFace = binding.happyFace;
+        sadFace = binding.sadFace;
+        sunButton = binding.sunButton;
+        cloudButton = binding.cloudButton;
+        rainButton = binding.rainButton;
 
         editTextInput = binding.editTextInput;
         View view = binding.getRoot();
@@ -85,7 +89,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
         Button button2 = binding.button2;
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                raiseMusic();
+                raiseFeeling();
             }
         });
         Button button3 = binding.button3;
@@ -103,6 +107,8 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         imageView = binding.imageView;
 
+        //id = rand.nextInt(100);
+
 
         return view;
     }
@@ -113,9 +119,13 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
 
         MapsActivity activity = (MapsActivity) getActivity();
         if(activity instanceof MapsActivity) {
-            activity.addMarkerWithImage(uri);
-        }
 
+            diary = binding.editTextInput.getText().toString();
+            pictureUri = uri.toString();
+            activity.insertDatabase(feeling, weather, diary, pictureUri);
+            Lastid = activity.getLastId();
+            activity.addMarkerWithImage(uri,Lastid);
+        }
     }
 
     private void raiseDiary() {
@@ -141,9 +151,89 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
     }
     private void raiseWeather() {
         // fill in this
+        LinearLayout buttonContainer2 = binding.buttonContainer2;
+        buttonContainer2.setVisibility(View.VISIBLE);
+
+        sunButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseSunButton();
+            }
+        });
+
+        cloudButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseCloudButton();
+            }
+        });
+
+        rainButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseRainButton();
+            }
+        });
     }
-    private void raiseMusic() {
+
+    private void raiseFeeling() {
         // fill in this
+        LinearLayout buttonContainer = binding.buttonContainer;
+        buttonContainer.setVisibility(View.VISIBLE);
+
+        //Button normalFace = binding.normalFace;
+        normalFace.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseNormalFace();
+            }
+        });
+
+        //Button happyFace = binding.happyFace;
+        happyFace.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseHappyFace();
+            }
+        });
+
+        //Button sadFace = binding.sadFace;
+        sadFace.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                raiseSadFace();
+            }
+        });
+    }
+
+    private void raiseSunButton(){
+        weather = 1;
+        cloudButton.setVisibility(View.GONE);
+        rainButton.setVisibility(View.GONE);
+    }
+
+    private void raiseCloudButton(){
+        weather = 2;
+        sunButton.setVisibility(View.GONE);
+        rainButton.setVisibility(View.GONE);
+    }
+
+    private void raiseRainButton(){
+        weather = 3;
+        cloudButton.setVisibility(View.GONE);
+        sunButton.setVisibility(View.GONE);
+    }
+
+    private void raiseNormalFace(){
+        feeling = 1;
+        happyFace.setVisibility(View.GONE);
+        sadFace.setVisibility(View.GONE);
+    }
+
+    private void raiseHappyFace(){
+        feeling = 2;
+        normalFace.setVisibility(View.GONE);
+        sadFace.setVisibility(View.GONE);
+    }
+
+    private void raiseSadFace(){
+        feeling = 3;
+        happyFace.setVisibility(View.GONE);
+        normalFace.setVisibility(View.GONE);
     }
 
     @Override
@@ -155,6 +245,7 @@ public class MainPopupFragment extends BottomSheetDialogFragment {
         //}
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             try {
+                pictureUri = uri.toString();
                 Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
                 imageView.setImageBitmap(imageBitmap);
             } catch (IOException e) {

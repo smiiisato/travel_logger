@@ -3,12 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainPopupFragment"
+    tools:context=".ShowInfoFragment"
     android:orientation="vertical"
-    android:gravity="center_horizontal|center_vertical"
-    >
-
-    <!-- TODO: Update blank fragment layout -->
+    android:gravity="center_horizontal|center_vertical">
 
     <View
         android:layout_width="match_parent"
@@ -20,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:padding="16dp"
         android:gravity="center_horizontal|center_vertical">
 
         <LinearLayout
@@ -27,9 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:padding="16dp"
             android:layout_marginRight="20dp"
-            android:layout_weight="0.5"
-            android:gravity="center_horizontal">
+            android:layout_weight="0.5">
 
             <Button
                 android:id="@+id/button2"
@@ -47,37 +45,41 @@
                 android:textColor="#FFFFFF"
                 />
 
+            //show icon here
             <LinearLayout
                 android:id="@+id/buttonContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 >
 
                 <Button
-                    android:id="@+id/normalFace"
+                    android:id="@+id/normalFace2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_sentiment_normal"
                     android:layout_marginRight="16dp"
+                    android:visibility="gone"
                     />
                 <Button
-                    android:id="@+id/happyFace"
+                    android:id="@+id/happyFace2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_sentiment_happy"
                     android:layout_marginRight="16dp"
+                    android:visibility="gone"
                     />
                 <Button
-                    android:id="@+id/sadFace"
+                    android:id="@+id/sadFace2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_sentiment_sad"
                     android:layout_marginRight="16dp"
+                    android:visibility="gone"
                     />
 
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -85,8 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="0.5"
-            android:gravity="center_horizontal">
+            android:padding="16dp"
+            android:layout_weight="0.5">
 
             <Button
                 android:id="@+id/button3"
@@ -102,41 +104,45 @@
                 android:backgroundTint="#FA8000"
                 android:textColor="#FFFFFF"/>
 
+            //show icon here
             <LinearLayout
                 android:id="@+id/buttonContainer2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 >
 
                 <Button
-                    android:id="@+id/sunButton"
+                    android:id="@+id/sunButton2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_wb_sun"
                     android:layout_marginRight="16dp"
+                    android:visibility="gone"
                     />
                 <Button
-                    android:id="@+id/cloudButton"
+                    android:id="@+id/cloudButton2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_cloud"
                     android:layout_marginRight="16dp"
+                    android:visibility="gone"
                     />
                 <Button
-                    android:id="@+id/rainButton"
+                    android:id="@+id/rainButton2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="@drawable/ic_baseline_umbrella"
                     android:layout_marginRight="16dp"
+                    android:visibility="gone"
                     />
 
             </LinearLayout>
+
+
         </LinearLayout>
 
     </LinearLayout>
-
 
     <Button
         android:id="@+id/button1"
@@ -152,14 +158,15 @@
         android:backgroundTint="#FA8000"
         android:textColor="#FFFFFF"/>
 
-    <EditText
-        android:id="@+id/editTextInput"
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ここに入力してください"
-        android:visibility="gone"
+        android:text=""
+        android:textSize="18sp"
         android:background="@drawable/rectangle_border"
-        android:layout_marginBottom="8dp"/> <!-- 最初は非表示にする -->
+        android:layout_centerInParent="true"/>
 
 
     <Button
@@ -183,6 +190,5 @@
         android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:scaleType="centerCrop" />
-
 
 </LinearLayout>

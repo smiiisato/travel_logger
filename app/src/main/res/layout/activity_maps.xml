@@ -16,12 +16,33 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapsActivity" />
+        tools:context=".MapsActivity"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"/>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#F6E5CC"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:text="Travel Logger"
+            android:textSize="20sp"
+            android:textColor="#FA8000"
+            android:layout_marginTop="10dp"/>
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FFFFFF"
+        android:background="#F6E5CC"
         android:layout_alignParentBottom="true"/>
 
     <Button
@@ -30,7 +51,9 @@
         android:layout_height="36dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_baseline_add_circle_outline_24" />
+        android:background="@drawable/ic_baseline_add_circle_outline_24"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#FA8000"/>
 
 
 
